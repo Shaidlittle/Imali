@@ -1,0 +1,1433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Imali — Know Your Rand. Own Your Life.</title>
+<meta name="description" content="Imali is South Africa's financial wellness tool. Track spending, destroy debt, and stop feeling broke every month. Free to start. Works in Rands.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --forest: #1E3D2F;
+  --forest-mid: #2A5240;
+  --sage: #4A7B5E;
+  --sage-light: #6A9E7F;
+  --cream: #F4EEE2;
+  --cream-dark: #EAE0CE;
+  --sand: #D6C5A0;
+  --gold: #B07D22;
+  --gold-light: #CFA04A;
+  --dark: #181814;
+  --text: #28281F;
+  --muted: #68665C;
+  --white: #FDFAF4;
+  --danger: #A93228;
+  --warning: #B8700A;
+  --success: #2B6E47;
+  --r: 14px;
+  --r-lg: 20px;
+  --shadow: 0 2px 20px rgba(30,61,47,0.08);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);line-height:1.6;font-size:16px;min-height:100vh}
+h1,h2,h3{font-family:'Cormorant Garamond',serif;line-height:1.2;font-weight:500}
+.screen{display:none}
+.screen.active{display:block}
+button{cursor:pointer;font-family:'DM Sans',sans-serif}
+input{font-family:'DM Sans',sans-serif}
+
+/* ── NAV ── */
+nav{position:sticky;top:0;z-index:100;background:rgba(244,238,226,0.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(176,125,34,0.15);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo-mark{width:36px;height:36px;background:var(--forest);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#FDFAF4;font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600}
+.nav-logo-text{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--forest);letter-spacing:-0.3px}
+.nav-links{display:flex;align-items:center;gap:8px}
+.nav-link{padding:7px 14px;border-radius:40px;font-size:14px;font-weight:400;color:var(--muted);text-decoration:none;border:none;background:none;transition:all .2s}
+.nav-link:hover,.nav-link.active-nav{color:var(--forest);background:var(--cream-dark)}
+.btn-nav{padding:8px 20px;border-radius:40px;background:var(--forest);color:var(--white);font-size:14px;font-weight:500;border:none;transition:all .2s}
+.btn-nav:hover{background:var(--forest-mid);transform:translateY(-1px)}
+.nav-mobile{display:none;align-items:center;gap:8px}
+@media(max-width:680px){.nav-links{display:none}.nav-mobile{display:flex}}
+
+/* ── LANDING ── */
+#landing{min-height:calc(100vh - 60px)}
+.hero{padding:80px 24px 60px;text-align:center;max-width:860px;margin:0 auto}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(30,61,47,0.08);border:1px solid rgba(30,61,47,0.12);border-radius:40px;padding:6px 16px;font-size:13px;font-weight:500;color:var(--forest);margin-bottom:28px;letter-spacing:0.01em}
+.hero-eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--sage-light)}
+.hero h1{font-size:clamp(42px,7vw,80px);color:var(--forest);margin-bottom:20px;letter-spacing:-1px;line-height:1.05}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero-sub{font-size:clamp(16px,2.5vw,20px);color:var(--muted);max-width:560px;margin:0 auto 40px;font-weight:300;line-height:1.7}
+.hero-ctas{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:60px}
+.btn-primary{padding:14px 32px;border-radius:40px;background:var(--forest);color:var(--white);font-size:16px;font-weight:500;border:none;transition:all .25s;letter-spacing:0.01em}
+.btn-primary:hover{background:var(--forest-mid);transform:translateY(-2px);box-shadow:0 8px 24px rgba(30,61,47,0.25)}
+.btn-secondary{padding:14px 32px;border-radius:40px;background:transparent;color:var(--forest);font-size:16px;font-weight:500;border:1.5px solid rgba(30,61,47,0.3);transition:all .25s}
+.btn-secondary:hover{border-color:var(--forest);background:rgba(30,61,47,0.05)}
+.hero-stats{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;padding:28px;background:var(--white);border-radius:var(--r-lg);border:1px solid rgba(176,125,34,0.2);box-shadow:var(--shadow)}
+.h-stat{text-align:center;padding:0 20px}
+.h-stat-val{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:600;color:var(--forest)}
+.h-stat-lab{font-size:12px;color:var(--muted);font-weight:400;margin-top:2px}
+.h-stat-div{width:1px;background:var(--sand);align-self:stretch}
+
+/* Features */
+.features{padding:80px 24px;max-width:1100px;margin:0 auto}
+.section-eyebrow{font-size:12px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+.section-title{font-size:clamp(28px,4vw,42px);color:var(--forest);margin-bottom:12px;letter-spacing:-0.5px}
+.section-sub{font-size:16px;color:var(--muted);max-width:500px;line-height:1.7;margin-bottom:48px}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+.feat-card{background:var(--white);border-radius:var(--r-lg);padding:28px;border:1px solid rgba(176,125,34,0.12);transition:all .25s}
+.feat-card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.feat-icon{width:48px;height:48px;border-radius:12px;background:rgba(30,61,47,0.08);display:flex;align-items:center;justify-content:center;margin-bottom:18px;font-size:22px}
+.feat-card h3{font-size:20px;color:var(--forest);margin-bottom:8px}
+.feat-card p{font-size:14px;color:var(--muted);line-height:1.65}
+.feat-tag{display:inline-block;margin-top:12px;font-size:11px;font-weight:500;padding:3px 10px;border-radius:40px;background:rgba(30,61,47,0.07);color:var(--forest)}
+
+/* Problem section */
+.problem{background:var(--forest);padding:80px 24px;text-align:center}
+.problem-inner{max-width:760px;margin:0 auto}
+.problem h2{font-size:clamp(28px,4vw,48px);color:var(--cream);margin-bottom:20px;line-height:1.15}
+.problem h2 em{color:var(--gold-light);font-style:italic}
+.problem p{font-size:18px;color:rgba(244,238,226,0.7);margin-bottom:36px;font-weight:300;line-height:1.7}
+.problem-stats{display:flex;flex-wrap:wrap;justify-content:center;gap:24px;margin-bottom:48px}
+.prob-stat{text-align:center}
+.prob-val{font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:600;color:var(--gold-light);line-height:1}
+.prob-lab{font-size:13px;color:rgba(244,238,226,0.6);margin-top:6px}
+.btn-cream{padding:14px 32px;border-radius:40px;background:var(--cream);color:var(--forest);font-size:16px;font-weight:500;border:none;transition:all .25s}
+.btn-cream:hover{background:var(--white);transform:translateY(-2px)}
+
+/* Testimonials */
+.testimonials{padding:80px 24px;max-width:1000px;margin:0 auto}
+.testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+.testi{background:var(--white);border-radius:var(--r-lg);padding:28px;border:1px solid rgba(176,125,34,0.12)}
+.testi-quote{font-size:15px;color:var(--text);line-height:1.7;margin-bottom:20px;font-style:italic}
+.testi-quote::before{content:'"';font-family:'Cormorant Garamond',serif;font-size:48px;color:var(--gold-light);line-height:0;vertical-align:-20px;margin-right:2px}
+.testi-author{display:flex;align-items:center;gap:10px}
+.testi-avatar{width:36px;height:36px;border-radius:50%;background:var(--forest);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;color:var(--cream)}
+.testi-name{font-size:13px;font-weight:500;color:var(--forest)}
+.testi-place{font-size:12px;color:var(--muted)}
+
+/* CTA Section */
+.cta-section{background:linear-gradient(135deg,var(--cream-dark) 0%,var(--cream) 100%);padding:80px 24px;text-align:center}
+.cta-section h2{font-size:clamp(28px,4vw,52px);color:var(--forest);margin-bottom:12px;letter-spacing:-0.5px}
+.cta-section p{font-size:18px;color:var(--muted);margin-bottom:40px;font-weight:300}
+.cta-trust{display:flex;flex-wrap:wrap;justify-content:center;gap:24px;margin-top:28px}
+.trust-item{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)}
+.trust-dot{width:5px;height:5px;border-radius:50%;background:var(--sage)}
+
+/* Footer */
+footer{background:var(--forest);padding:40px 24px;text-align:center}
+footer p{color:rgba(244,238,226,0.5);font-size:13px}
+footer strong{color:rgba(244,238,226,0.8)}
+
+/* ── ONBOARDING ── */
+#onboarding{min-height:100vh;background:var(--cream)}
+.onboard-wrap{max-width:540px;margin:0 auto;padding:40px 24px 80px}
+.onboard-progress{display:flex;gap:6px;margin-bottom:40px}
+.prog-step{flex:1;height:4px;border-radius:2px;background:var(--sand);transition:background .4s}
+.prog-step.done{background:var(--sage)}
+.prog-step.active{background:var(--forest)}
+.onboard-step{display:none}
+.onboard-step.active{display:block;animation:fadeUp .35s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.step-icon{width:56px;height:56px;background:rgba(30,61,47,0.08);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:20px}
+.onboard-step h2{font-size:30px;color:var(--forest);margin-bottom:8px}
+.onboard-step .step-sub{font-size:15px;color:var(--muted);margin-bottom:32px;font-weight:300}
+.field{margin-bottom:20px}
+.field label{display:block;font-size:13px;font-weight:500;color:var(--forest);margin-bottom:6px}
+.field-hint{font-size:12px;color:var(--muted);margin-top:4px}
+.input-wrap{position:relative}
+.input-prefix{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:15px;font-weight:500;color:var(--sage);pointer-events:none}
+input[type=text],input[type=number]{width:100%;padding:13px 14px 13px 36px;border:1.5px solid var(--sand);border-radius:var(--r-sm);font-size:16px;background:var(--white);color:var(--text);transition:border-color .2s;-moz-appearance:textfield}
+input[type=text]:focus,input[type=number]:focus{outline:none;border-color:var(--sage)}
+input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
+.slider-field{margin-bottom:24px}
+.slider-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.slider-label{font-size:14px;font-weight:500;color:var(--text)}
+.slider-val{font-size:15px;font-weight:500;color:var(--forest);min-width:80px;text-align:right}
+input[type=range]{width:100%;height:6px;-webkit-appearance:none;appearance:none;background:var(--sand);border-radius:3px;outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:20px;height:20px;border-radius:50%;background:var(--forest);cursor:pointer;box-shadow:0 2px 6px rgba(30,61,47,0.3);transition:transform .15s}
+input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.2)}
+input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--forest);cursor:pointer;border:none}
+.step-nav{display:flex;gap:10px;margin-top:32px}
+.btn-full{flex:1;padding:15px;border-radius:40px;background:var(--forest);color:var(--white);font-size:16px;font-weight:500;border:none;transition:all .25s}
+.btn-full:hover{background:var(--forest-mid)}
+.btn-back{padding:15px 24px;border-radius:40px;background:transparent;color:var(--muted);font-size:15px;border:1.5px solid var(--sand);transition:all .2s}
+.btn-back:hover{border-color:var(--text);color:var(--text)}
+.result-preview{background:var(--white);border-radius:var(--r-lg);padding:28px;border:1px solid rgba(30,61,47,0.12);margin-top:28px;text-align:center}
+.result-label{font-size:13px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px}
+.result-big{font-family:'Cormorant Garamond',serif;font-size:56px;font-weight:600;color:var(--success);letter-spacing:-1px;line-height:1}
+.result-sub{font-size:14px;color:var(--muted);margin-top:8px}
+.insight-box{background:rgba(30,61,47,0.06);border-radius:var(--r-sm);padding:14px 16px;margin-top:16px;text-align:left;font-size:14px;color:var(--forest);line-height:1.6}
+
+/* ── DASHBOARD ── */
+#dashboard{min-height:100vh}
+.dash-wrap{max-width:900px;margin:0 auto;padding:32px 24px 80px}
+.dash-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;flex-wrap:wrap;gap:12px}
+.dash-greeting h2{font-size:28px;color:var(--forest)}
+.dash-greeting p{font-size:14px;color:var(--muted)}
+.dash-date{font-size:13px;color:var(--muted);background:var(--white);padding:8px 16px;border-radius:40px;border:1px solid var(--sand)}
+
+/* Safe to Spend hero */
+.sts-hero{background:var(--forest);border-radius:var(--r-lg);padding:36px;margin-bottom:20px;text-align:center;position:relative;overflow:hidden}
+.sts-hero::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;border-radius:50%;background:rgba(176,125,34,0.1)}
+.sts-hero::after{content:'';position:absolute;bottom:-60px;left:-30px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,0.04)}
+.sts-label{font-size:13px;font-weight:500;color:rgba(244,238,226,0.6);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:10px}
+.sts-amount{font-family:'Cormorant Garamond',serif;font-size:clamp(56px,10vw,88px);font-weight:600;color:var(--white);letter-spacing:-2px;line-height:1;position:relative;z-index:1}
+.sts-sub{font-size:14px;color:rgba(244,238,226,0.6);margin-top:10px}
+.sts-bar-wrap{margin-top:20px;background:rgba(255,255,255,0.12);border-radius:4px;height:8px;overflow:hidden}
+.sts-bar-fill{height:100%;background:var(--gold-light);border-radius:4px;transition:width 1s ease}
+.sts-bar-labels{display:flex;justify-content:space-between;font-size:12px;color:rgba(244,238,226,0.5);margin-top:6px}
+
+/* Stat grid */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:20px}
+.stat-card{background:var(--white);border-radius:var(--r);padding:20px;border:1px solid rgba(176,125,34,0.1)}
+.stat-card-label{font-size:12px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px}
+.stat-card-val{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;color:var(--forest);line-height:1}
+.stat-card-note{font-size:12px;color:var(--muted);margin-top:4px}
+.val-warn{color:var(--warning)}
+.val-danger{color:var(--danger)}
+.val-good{color:var(--success)}
+
+/* Score gauge */
+.score-row{display:grid;grid-template-columns:1fr 2fr;gap:14px;margin-bottom:20px;align-items:start}
+@media(max-width:540px){.score-row{grid-template-columns:1fr}}
+.score-card{background:var(--white);border-radius:var(--r);padding:24px;border:1px solid rgba(176,125,34,0.1);text-align:center}
+.gauge-wrap{position:relative;width:120px;height:70px;margin:0 auto 12px;overflow:hidden}
+.gauge-arc{width:120px;height:120px;border-radius:50%;border:12px solid var(--cream-dark);border-bottom-color:transparent;border-right-color:transparent;transform:rotate(135deg);position:absolute;top:0;left:0}
+.gauge-fill{width:120px;height:120px;border-radius:50%;border:12px solid var(--sage);border-bottom-color:transparent;border-right-color:transparent;transform:rotate(135deg);position:absolute;top:0;left:0;transition:transform 1.2s cubic-bezier(.4,0,.2,1)}
+.gauge-num{position:absolute;bottom:0;left:50%;transform:translateX(-50%);font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:600;color:var(--forest)}
+.score-label{font-size:13px;font-weight:500;color:var(--forest);margin-bottom:4px}
+.score-note{font-size:12px;color:var(--muted)}
+
+/* Alerts panel */
+.alerts-card{background:var(--white);border-radius:var(--r);padding:20px 24px;border:1px solid rgba(176,125,34,0.1)}
+.alerts-title{font-size:15px;font-weight:500;color:var(--forest);margin-bottom:14px}
+.alert-item{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--cream-dark)}
+.alert-item:last-child{border-bottom:none;padding-bottom:0}
+.alert-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:6px}
+.alert-body{font-size:13px;color:var(--text);line-height:1.5}
+.alert-action{font-size:12px;font-weight:500;color:var(--sage);margin-top:3px}
+.dot-warn{background:var(--warning)}
+.dot-danger{background:var(--danger)}
+.dot-good{background:var(--success)}
+.dot-info{background:var(--sage)}
+
+/* Section header */
+.sec-head{display:flex;justify-content:space-between;align-items:center;margin:28px 0 14px}
+.sec-head h3{font-size:22px;color:var(--forest)}
+.sec-link{font-size:13px;color:var(--sage);font-weight:500;border:none;background:none;cursor:pointer;text-decoration:underline}
+
+/* Quick actions */
+.quick-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:28px}
+.quick-btn{background:var(--white);border:1px solid rgba(176,125,34,0.12);border-radius:var(--r);padding:18px 12px;text-align:center;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:8px}
+.quick-btn:hover{background:var(--cream-dark);transform:translateY(-2px)}
+.quick-btn-icon{font-size:24px}
+.quick-btn-label{font-size:12px;font-weight:500;color:var(--forest)}
+
+/* ── DEBT ── */
+#debt-screen{min-height:100vh}
+.debt-wrap{max-width:820px;margin:0 auto;padding:32px 24px 80px}
+.page-head{margin-bottom:28px}
+.page-head h2{font-size:34px;color:var(--forest);margin-bottom:4px}
+.page-head p{font-size:14px;color:var(--muted)}
+.debt-input-card{background:var(--white);border-radius:var(--r-lg);padding:24px;border:1px solid rgba(176,125,34,0.1);margin-bottom:20px}
+.debt-input-card h3{font-size:18px;color:var(--forest);margin-bottom:16px}
+.debt-row{display:grid;grid-template-columns:2fr 1.2fr 1fr 1fr 40px;gap:8px;align-items:center;margin-bottom:10px}
+@media(max-width:600px){.debt-row{grid-template-columns:1fr 1fr;gap:8px}.debt-row .del-btn{grid-column:span 2;width:100%}}
+.debt-input{width:100%;padding:10px 12px;border:1.5px solid var(--sand);border-radius:var(--r-sm);font-size:14px;background:var(--white);color:var(--text)}
+.debt-input:focus{outline:none;border-color:var(--sage)}
+.debt-input-prefix{position:relative}
+.debt-input-prefix::before{content:'R';position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--sage);pointer-events:none;z-index:1}
+.debt-input-prefix input{padding-left:24px}
+.debt-input-prefix-pct::after{content:'%';position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--sage);pointer-events:none}
+.debt-input-prefix-pct input{padding-right:24px}
+.del-btn{width:36px;height:36px;border-radius:8px;border:1.5px solid var(--sand);background:none;color:var(--muted);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.del-btn:hover{background:#fdecea;border-color:#f5c6c6;color:var(--danger)}
+.add-debt-btn{width:100%;padding:11px;border-radius:var(--r-sm);border:1.5px dashed var(--sand);background:none;font-size:14px;color:var(--sage);font-weight:500;cursor:pointer;margin-top:8px;transition:all .2s}
+.add-debt-btn:hover{border-color:var(--sage);background:rgba(74,123,94,0.04)}
+.extra-row{display:flex;align-items:center;gap:12px;margin-top:16px;flex-wrap:wrap}
+.extra-row label{font-size:14px;font-weight:500;color:var(--text)}
+.extra-input-wrap{position:relative;width:150px}
+.method-toggle{display:flex;gap:4px;margin-top:16px;background:var(--cream-dark);padding:4px;border-radius:40px;width:fit-content}
+.method-btn{padding:8px 20px;border-radius:40px;border:none;font-size:14px;font-weight:500;color:var(--muted);background:none;cursor:pointer;transition:all .2s}
+.method-btn.active{background:var(--white);color:var(--forest);box-shadow:0 1px 4px rgba(0,0,0,0.1)}
+
+/* Debt results */
+.debt-result{background:var(--forest);border-radius:var(--r-lg);padding:32px;margin-bottom:20px;text-align:center}
+.debt-result-label{font-size:13px;color:rgba(244,238,226,0.6);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px}
+.debt-result-date{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,6vw,54px);font-weight:600;color:var(--white);margin-bottom:4px}
+.debt-result-sub{font-size:14px;color:rgba(244,238,226,0.6)}
+.debt-savings{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.debt-save-card{background:var(--white);border-radius:var(--r);padding:18px;border:1px solid rgba(176,125,34,0.1);text-align:center}
+.debt-save-label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px}
+.debt-save-val{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:600;color:var(--success)}
+.payoff-order{background:var(--white);border-radius:var(--r-lg);padding:20px 24px;border:1px solid rgba(176,125,34,0.1);margin-bottom:20px}
+.payoff-order h3{font-size:18px;color:var(--forest);margin-bottom:14px}
+.payoff-item{display:flex;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--cream-dark)}
+.payoff-item:last-child{border-bottom:none}
+.payoff-num{width:28px;height:28px;border-radius:50%;background:var(--forest);color:var(--white);font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.payoff-num.focus{background:var(--gold)}
+.payoff-name{flex:1;font-size:14px;font-weight:500;color:var(--text)}
+.payoff-detail{font-size:12px;color:var(--muted)}
+.payoff-badge{font-size:11px;font-weight:500;padding:4px 10px;border-radius:40px;background:rgba(176,125,34,0.1);color:var(--gold)}
+.timeline-card{background:var(--white);border-radius:var(--r-lg);padding:20px 24px;border:1px solid rgba(176,125,34,0.1)}
+.timeline-card h3{font-size:18px;color:var(--forest);margin-bottom:14px}
+.timeline-table{width:100%;font-size:13px}
+.timeline-table th{text-align:left;padding:6px 10px;color:var(--muted);font-weight:500;border-bottom:1px solid var(--cream-dark)}
+.timeline-table td{padding:8px 10px;border-bottom:1px solid rgba(230,224,210,0.6);color:var(--text)}
+.timeline-table tr:last-child td{border-bottom:none;font-weight:600;color:var(--success)}
+.timeline-wrap{max-height:300px;overflow-y:auto}
+
+/* ── BUDGET ── */
+#budget-screen{min-height:100vh}
+.budget-wrap{max-width:820px;margin:0 auto;padding:32px 24px 80px}
+.budget-overview{background:var(--forest);border-radius:var(--r-lg);padding:28px;margin-bottom:20px}
+.budget-overview-title{font-size:13px;color:rgba(244,238,226,0.6);margin-bottom:16px;text-transform:uppercase;letter-spacing:0.06em}
+.budget-bars{display:flex;flex-direction:column;gap:12px}
+.bbar{display:flex;align-items:center;gap:10px}
+.bbar-name{font-size:13px;color:rgba(244,238,226,0.8);width:110px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bbar-track{flex:1;height:8px;background:rgba(255,255,255,0.12);border-radius:4px;overflow:hidden}
+.bbar-fill{height:100%;border-radius:4px;background:var(--sage-light);transition:width .8s ease}
+.bbar-fill.over{background:var(--danger)}
+.bbar-fill.near{background:var(--warning)}
+.bbar-val{font-size:12px;color:rgba(244,238,226,0.6);width:60px;text-align:right}
+.budget-cats{display:flex;flex-direction:column;gap:10px}
+.cat-card{background:var(--white);border-radius:var(--r);padding:16px 18px;border:1px solid rgba(176,125,34,0.1);display:flex;align-items:center;gap:14px}
+.cat-emoji{font-size:24px;width:40px;text-align:center}
+.cat-info{flex:1}
+.cat-name{font-size:14px;font-weight:500;color:var(--text)}
+.cat-detail{font-size:12px;color:var(--muted);margin-top:2px}
+.cat-right{text-align:right}
+.cat-spent{font-size:15px;font-weight:500;color:var(--text)}
+.cat-budget{font-size:12px;color:var(--muted)}
+.cat-bar{height:4px;border-radius:2px;background:var(--cream-dark);margin-top:8px;overflow:hidden;width:80px}
+.cat-bar-fill{height:100%;border-radius:2px;background:var(--sage)}
+.add-expense-btn{position:fixed;bottom:30px;right:24px;width:56px;height:56px;border-radius:50%;background:var(--forest);color:var(--white);font-size:26px;border:none;box-shadow:0 4px 20px rgba(30,61,47,0.3);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .25s;z-index:50}
+.add-expense-btn:hover{background:var(--forest-mid);transform:scale(1.1)}
+
+/* Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(24,24,20,0.5);display:none;align-items:flex-end;justify-content:center;z-index:200;backdrop-filter:blur(4px)}
+.modal-overlay.open{display:flex}
+.modal{background:var(--cream);border-radius:20px 20px 0 0;padding:28px 24px 40px;width:100%;max-width:540px;animation:slideUp .3s ease}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-handle{width:40px;height:4px;border-radius:2px;background:var(--sand);margin:0 auto 20px}
+.modal h3{font-size:22px;color:var(--forest);margin-bottom:20px}
+.modal-actions{display:flex;gap:10px;margin-top:24px}
+.btn-danger{padding:14px 24px;border-radius:40px;background:transparent;color:var(--muted);font-size:15px;border:1.5px solid var(--sand);cursor:pointer}
+
+/* Bottom nav (mobile) */
+.bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:rgba(244,238,226,0.95);backdrop-filter:blur(12px);border-top:1px solid rgba(176,125,34,0.15);padding:8px 0 20px;z-index:100}
+.bnav-inner{display:flex;justify-content:space-around}
+.bnav-item{display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 16px;cursor:pointer;border:none;background:none;color:var(--muted);transition:color .2s;font-family:'DM Sans',sans-serif}
+.bnav-item.active{color:var(--forest)}
+.bnav-icon{font-size:20px;line-height:1}
+.bnav-label{font-size:10px;font-weight:500}
+@media(max-width:680px){.bottom-nav{display:block}body{padding-bottom:80px}.add-expense-btn{bottom:90px}}
+
+/* Util */
+.mt-4{margin-top:4px}.mt-8{margin-top:8px}.mt-12{margin-top:12px}.mt-16{margin-top:16px}.mt-24{margin-top:24px}
+.hidden{display:none!important}
+.pill{display:inline-block;padding:4px 12px;border-radius:40px;font-size:12px;font-weight:500}
+.pill-green{background:rgba(43,110,71,0.1);color:var(--success)}
+.pill-gold{background:rgba(176,125,34,0.1);color:var(--gold)}
+.pill-red{background:rgba(169,50,40,0.1);color:var(--danger)}
+.divider{height:1px;background:var(--cream-dark);margin:20px 0}
+.calc-btn{width:100%;padding:15px;border-radius:40px;background:var(--forest);color:var(--white);font-size:16px;font-weight:500;border:none;cursor:pointer;margin-top:16px;transition:all .25s}
+.calc-btn:hover{background:var(--forest-mid)}
+
+/* ── AI CHAT ── */
+.ai-fab{position:fixed;bottom:30px;left:24px;z-index:150;display:none}
+.ai-fab-btn{width:56px;height:56px;border-radius:50%;background:var(--gold);color:var(--white);border:none;font-size:22px;box-shadow:0 4px 20px rgba(176,125,34,0.4);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .25s;position:relative}
+.ai-fab-btn:hover{background:var(--gold-light);transform:scale(1.08)}
+.ai-fab-pulse{position:absolute;top:-3px;right:-3px;width:14px;height:14px;background:var(--success);border-radius:50%;border:2px solid var(--cream);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.3);opacity:.7}}
+.ai-fab-tip{position:absolute;bottom:64px;left:50%;transform:translateX(-50%);background:var(--forest);color:var(--white);font-size:12px;font-weight:500;padding:6px 12px;border-radius:40px;white-space:nowrap;box-shadow:0 4px 12px rgba(0,0,0,0.2);pointer-events:none;opacity:0;transition:opacity .2s}
+.ai-fab:hover .ai-fab-tip{opacity:1}
+
+.ai-panel-overlay{position:fixed;inset:0;background:rgba(24,24,20,0.4);z-index:200;display:none;backdrop-filter:blur(3px)}
+.ai-panel-overlay.open{display:block}
+.ai-panel{position:fixed;bottom:0;left:0;right:0;z-index:201;display:flex;justify-content:center;transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,.2,1)}
+.ai-panel.open{transform:translateY(0)}
+.ai-panel-inner{background:var(--white);border-radius:24px 24px 0 0;width:100%;max-width:680px;height:85vh;display:flex;flex-direction:column;box-shadow:0 -8px 40px rgba(30,61,47,0.15)}
+.ai-panel-head{padding:16px 20px 12px;border-bottom:1px solid var(--cream-dark);flex-shrink:0}
+.ai-panel-handle{width:40px;height:4px;border-radius:2px;background:var(--sand);margin:0 auto 14px}
+.ai-panel-title-row{display:flex;align-items:center;justify-content:space-between}
+.ai-panel-title{display:flex;align-items:center;gap:10px}
+.ai-avatar{width:38px;height:38px;border-radius:50%;background:var(--forest);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;color:var(--cream);flex-shrink:0}
+.ai-name{font-size:15px;font-weight:500;color:var(--forest)}
+.ai-status{font-size:12px;color:var(--success);display:flex;align-items:center;gap:4px}
+.ai-status-dot{width:6px;height:6px;border-radius:50%;background:var(--success)}
+.ai-close{width:32px;height:32px;border-radius:50%;border:none;background:var(--cream-dark);color:var(--muted);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.ai-close:hover{background:var(--sand);color:var(--text)}
+.ai-context-bar{margin-top:10px;background:rgba(30,61,47,0.06);border-radius:10px;padding:8px 12px;font-size:12px;color:var(--forest);display:flex;align-items:center;gap:6px}
+.ai-ctx-dot{width:5px;height:5px;border-radius:50%;background:var(--sage);flex-shrink:0}
+
+.ai-messages{flex:1;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:14px}
+.ai-messages::-webkit-scrollbar{width:4px}
+.ai-messages::-webkit-scrollbar-thumb{background:var(--sand);border-radius:2px}
+.ai-msg{display:flex;gap:10px;align-items:flex-start;animation:fadeUp .25s ease}
+.ai-msg.user{flex-direction:row-reverse}
+.ai-msg-avatar{width:30px;height:30px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600}
+.ai-msg.ai .ai-msg-avatar{background:var(--forest);color:var(--cream);font-family:'Cormorant Garamond',serif;font-size:14px}
+.ai-msg.user .ai-msg-avatar{background:var(--gold);color:var(--white)}
+.ai-bubble{max-width:82%;padding:12px 16px;border-radius:18px;font-size:14px;line-height:1.65;color:var(--text)}
+.ai-msg.ai .ai-bubble{background:var(--cream);border-radius:4px 18px 18px 18px;border:1px solid var(--cream-dark)}
+.ai-msg.user .ai-bubble{background:var(--forest);color:var(--white);border-radius:18px 4px 18px 18px}
+.ai-bubble strong{font-weight:500}
+.ai-bubble p{margin-bottom:6px}
+.ai-bubble p:last-child{margin-bottom:0}
+.ai-bubble ul{padding-left:16px;margin:4px 0}
+.ai-bubble ul li{margin-bottom:3px}
+.typing{display:flex;gap:4px;align-items:center;padding:14px 16px}
+.typing-dot{width:7px;height:7px;border-radius:50%;background:var(--sand);animation:typingBounce 1.2s infinite}
+.typing-dot:nth-child(2){animation-delay:.2s}
+.typing-dot:nth-child(3){animation-delay:.4s}
+@keyframes typingBounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
+
+.ai-starters{padding:0 20px 12px;flex-shrink:0}
+.ai-starters-label{font-size:11px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+.ai-chips{display:flex;gap:6px;flex-wrap:wrap}
+.ai-chip{padding:7px 14px;border-radius:40px;border:1px solid var(--sand);background:var(--white);font-size:13px;color:var(--forest);cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif;white-space:nowrap}
+.ai-chip:hover{background:var(--cream-dark);border-color:var(--sage)}
+
+.ai-input-row{padding:12px 16px 20px;border-top:1px solid var(--cream-dark);display:flex;gap:8px;align-items:flex-end;flex-shrink:0}
+.ai-input{flex:1;padding:12px 16px;border:1.5px solid var(--sand);border-radius:24px;font-size:15px;background:var(--cream);color:var(--text);resize:none;outline:none;font-family:'DM Sans',sans-serif;max-height:120px;overflow-y:auto;line-height:1.5;transition:border-color .2s}
+.ai-input:focus{border-color:var(--sage);background:var(--white)}
+.ai-send{width:44px;height:44px;border-radius:50%;background:var(--forest);border:none;color:var(--white);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
+.ai-send:hover:not(:disabled){background:var(--forest-mid);transform:scale(1.05)}
+.ai-send:disabled{background:var(--sand);cursor:not-allowed}
+@media(max-width:680px){.ai-fab{bottom:90px}.ai-panel-inner{height:90vh}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="main-nav">
+  <a class="nav-logo" href="#" onclick="showScreen('landing')">
+    <div class="nav-logo-mark">I</div>
+    <span class="nav-logo-text">Imali</span>
+  </a>
+  <div class="nav-links" id="nav-app-links" style="display:none">
+    <button class="nav-link active-nav" onclick="showScreen('dashboard');setActiveNav(this)">Home</button>
+    <button class="nav-link" onclick="showScreen('budget-screen');setActiveNav(this)">Budget</button>
+    <button class="nav-link" onclick="showScreen('debt-screen');renderDebt();setActiveNav(this)">Debt</button>
+  </div>
+  <div class="nav-links" id="nav-landing-links">
+    <a class="nav-link" href="#features">Features</a>
+    <a class="nav-link" href="#problem">Why Imali</a>
+    <button class="btn-nav" onclick="startOnboarding()">Get started — free</button>
+  </div>
+  <div class="nav-mobile">
+    <button class="btn-nav" onclick="startOnboarding()" id="nav-mobile-start">Get started</button>
+  </div>
+</nav>
+
+<!-- ════════════════ LANDING ════════════════ -->
+<div id="landing" class="screen active">
+
+  <section class="hero">
+    <div class="hero-eyebrow"><span class="hero-eyebrow-dot"></span>Built for South Africa · Works in Rands</div>
+    <h1>Know your <em>rand</em>.<br>Own your life.</h1>
+    <p class="hero-sub">Imali is the no-judgment financial coach for South Africans who want to stop feeling broke every month — and actually do something about it.</p>
+    <div class="hero-ctas">
+      <button class="btn-primary" onclick="startOnboarding()">Show me my money picture →</button>
+      <a class="btn-secondary" href="#features">See how it works</a>
+    </div>
+    <div class="hero-stats">
+      <div class="h-stat"><div class="h-stat-val" style="color:var(--danger)">31.4%</div><div class="h-stat-lab">SA unemployment rate</div></div>
+      <div class="h-stat-div"></div>
+      <div class="h-stat"><div class="h-stat-val" style="color:var(--warning)">75%</div><div class="h-stat-lab">of South Africans financially stressed</div></div>
+      <div class="h-stat-div"></div>
+      <div class="h-stat"><div class="h-stat-val" style="color:var(--danger)">57%</div><div class="h-stat-lab">youth unemployment (ages 15–24)</div></div>
+      <div class="h-stat-div"></div>
+      <div class="h-stat"><div class="h-stat-val" style="color:var(--success)">Free</div><div class="h-stat-lab">to start — no bank login needed</div></div>
+    </div>
+  </section>
+
+  <section class="features" id="features">
+    <div class="section-eyebrow">What Imali does</div>
+    <h2 class="section-title">Turn chaos into clarity</h2>
+    <p class="section-sub">Four tools that answer the four questions keeping you up at night.</p>
+    <div class="features-grid">
+      <div class="feat-card">
+        <div class="feat-icon">💰</div>
+        <h3>Safe to Spend</h3>
+        <p>Know exactly how much you can spend today without risking your bills. One number. Updated daily. No guessing.</p>
+        <span class="feat-tag">Your daily anchor</span>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">⚔️</div>
+        <h3>Debt Destroyer</h3>
+        <p>Enter your debts — store accounts, loans, credit cards — and see your exact debt-free date using snowball or avalanche strategy.</p>
+        <span class="feat-tag">See your finish line</span>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">📊</div>
+        <h3>Budget Tracker</h3>
+        <p>Track spending across SA-specific categories: groceries, transport, school fees, airtime, store accounts. Know where it's going.</p>
+        <span class="feat-tag">Stop the leaks</span>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">🔔</div>
+        <h3>Smart Alerts</h3>
+        <p>Get warned before you're in trouble — not after. Savings rate too low, debt payment approaching, subscription creep detected.</p>
+        <span class="feat-tag">Proactive not reactive</span>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">💚</div>
+        <h3>No Judgment</h3>
+        <p>Imali meets you where you are. No shame, no lectures, no complex jargon. Just warm, honest, actionable guidance in plain language.</p>
+        <span class="feat-tag">Emotional safety</span>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">🇿🇦</div>
+        <h3>SA-Built</h3>
+        <p>Designed for South African realities — Rands, Capitec statements, store accounts, stokvel savings, loadshedding budgets.</p>
+        <span class="feat-tag">Made for you</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="problem" id="problem">
+    <div class="problem-inner">
+      <h2>South Africa's money problem<br>is <em>not your fault</em>. But the solution is yours.</h2>
+      <p>The system is stacked against ordinary South Africans. But clarity about your own money is one thing no one can take from you.</p>
+      <div class="problem-stats">
+        <div class="prob-stat"><div class="prob-val">R15,000</div><div class="prob-lab">Avg consumer debt excluding home loans</div></div>
+        <div class="prob-stat"><div class="prob-val">73%</div><div class="prob-lab">South Africans spend more than they earn</div></div>
+        <div class="prob-stat"><div class="prob-val">R2k/hr</div><div class="prob-lab">Financial adviser fees — out of reach for most</div></div>
+      </div>
+      <button class="btn-cream" onclick="startOnboarding()">Get your free money picture — takes 2 minutes</button>
+    </div>
+  </section>
+
+  <section class="testimonials">
+    <div class="section-eyebrow" style="text-align:center">Real South Africans</div>
+    <h2 class="section-title" style="text-align:center;margin-bottom:8px">What happens when you see the truth</h2>
+    <p style="text-align:center;color:var(--muted);margin-bottom:40px;font-size:15px">The numbers don't lie — but they don't have to be scary either.</p>
+    <div class="testi-grid">
+      <div class="testi">
+        <p class="testi-quote">I finally saw my debt-free date — August 2027. I actually cried. Nobody had ever shown me that before.</p>
+        <div class="testi-author"><div class="testi-avatar">LM</div><div><div class="testi-name">Lerato M.</div><div class="testi-place">Johannesburg, Gauteng</div></div></div>
+      </div>
+      <div class="testi">
+        <p class="testi-quote">The safe-to-spend number changed everything. I used to check my account balance five times a day with dread. Now I just check Imali once.</p>
+        <div class="testi-author"><div class="testi-avatar">TS</div><div><div class="testi-name">Thabo S.</div><div class="testi-place">Cape Town, Western Cape</div></div></div>
+      </div>
+      <div class="testi">
+        <p class="testi-quote">It showed me I was spending R1,800/month on subscriptions I forgot about. That's R21,600 a year. Into the bin.</p>
+        <div class="testi-author"><div class="testi-avatar">NP</div><div><div class="testi-name">Nompumelelo P.</div><div class="testi-place">Durban, KwaZulu-Natal</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <h2>Stop wondering where<br>your money went.</h2>
+    <p>Set up in 2 minutes. Free to start. No bank login. No stress.</p>
+    <button class="btn-primary" style="font-size:18px;padding:16px 40px" onclick="startOnboarding()">Show me my money picture →</button>
+    <div class="cta-trust">
+      <div class="trust-item"><span class="trust-dot"></span>Works in South African Rands</div>
+      <div class="trust-item"><span class="trust-dot"></span>No bank login required</div>
+      <div class="trust-item"><span class="trust-dot"></span>Your data stays on your device</div>
+      <div class="trust-item"><span class="trust-dot"></span>Free to start</div>
+    </div>
+  </section>
+
+  <footer>
+    <p><strong>Imali</strong> · Built for South Africa · Know your rand. Own your life.</p>
+    <p style="margin-top:8px">© 2026 Imali Financial Tools</p>
+  </footer>
+</div>
+
+<!-- ════════════════ ONBOARDING ════════════════ -->
+<div id="onboarding" class="screen">
+  <div class="onboard-wrap">
+    <div class="onboard-progress">
+      <div class="prog-step active" id="ps1"></div>
+      <div class="prog-step" id="ps2"></div>
+      <div class="prog-step" id="ps3"></div>
+    </div>
+
+    <!-- Step 1: Income -->
+    <div class="onboard-step active" id="step1">
+      <div class="step-icon">💵</div>
+      <h2>What comes in?</h2>
+      <p class="step-sub">Let's start with your monthly take-home pay. Don't worry — it stays on your device only.</p>
+      <div class="field">
+        <label>Monthly take-home salary (after tax)</label>
+        <div class="input-wrap"><span class="input-prefix">R</span>
+          <input type="number" id="income-salary" placeholder="e.g. 12000" min="0">
+        </div>
+      </div>
+      <div class="field">
+        <label>Other income <span style="color:var(--muted);font-weight:400">(optional — side hustle, rental, etc.)</span></label>
+        <div class="input-wrap"><span class="input-prefix">R</span>
+          <input type="number" id="income-other" placeholder="e.g. 1500" min="0">
+        </div>
+      </div>
+      <div class="step-nav">
+        <button class="btn-full" onclick="goStep(2)">Next — Your expenses →</button>
+      </div>
+    </div>
+
+    <!-- Step 2: Expenses -->
+    <div class="onboard-step" id="step2">
+      <div class="step-icon">📤</div>
+      <h2>What goes out?</h2>
+      <p class="step-sub">Slide to your amount. We've set SA averages — adjust to match your life.</p>
+
+      <div class="slider-field">
+        <div class="slider-head"><span class="slider-label">🏠 Rent / Bond</span><span class="slider-val" id="sv-rent">R4,500</span></div>
+        <input type="range" id="sl-rent" min="0" max="20000" step="100" value="4500" oninput="updateSlider('rent',this.value)">
+      </div>
+      <div class="slider-field">
+        <div class="slider-head"><span class="slider-label">🚌 Transport</span><span class="slider-val" id="sv-transport">R1,200</span></div>
+        <input type="range" id="sl-transport" min="0" max="8000" step="100" value="1200" oninput="updateSlider('transport',this.value)">
+      </div>
+      <div class="slider-field">
+        <div class="slider-head"><span class="slider-label">🛒 Groceries</span><span class="slider-val" id="sv-groceries">R2,800</span></div>
+        <input type="range" id="sl-groceries" min="0" max="10000" step="100" value="2800" oninput="updateSlider('groceries',this.value)">
+      </div>
+      <div class="slider-field">
+        <div class="slider-head"><span class="slider-label">💡 Electricity / Utilities</span><span class="slider-val" id="sv-utilities">R800</span></div>
+        <input type="range" id="sl-utilities" min="0" max="3000" step="50" value="800" oninput="updateSlider('utilities',this.value)">
+      </div>
+      <div class="slider-field">
+        <div class="slider-head"><span class="slider-label">📱 Airtime / Data</span><span class="slider-val" id="sv-airtime">R350</span></div>
+        <input type="range" id="sl-airtime" min="0" max="2000" step="50" value="350" oninput="updateSlider('airtime',this.value)">
+      </div>
+      <div class="slider-field">
+        <div class="slider-head"><span class="slider-label">🏷️ Store accounts / Loans</span><span class="slider-val" id="sv-accounts">R900</span></div>
+        <input type="range" id="sl-accounts" min="0" max="8000" step="100" value="900" oninput="updateSlider('accounts',this.value)">
+      </div>
+      <div class="slider-field">
+        <div class="slider-head"><span class="slider-label">🎯 Other fixed costs</span><span class="slider-val" id="sv-other">R500</span></div>
+        <input type="range" id="sl-other" min="0" max="5000" step="100" value="500" oninput="updateSlider('other',this.value)">
+      </div>
+
+      <div class="step-nav">
+        <button class="btn-back" onclick="goStep(1)">← Back</button>
+        <button class="btn-full" onclick="goStep(3)">See my picture →</button>
+      </div>
+    </div>
+
+    <!-- Step 3: Result -->
+    <div class="onboard-step" id="step3">
+      <div class="step-icon">🎯</div>
+      <h2>Your money picture</h2>
+      <p class="step-sub">Here's the honest truth about your finances — and what you can do about it right now.</p>
+
+      <div class="result-preview">
+        <div class="result-label">Safe to spend today</div>
+        <div class="result-big" id="ob-sts">R—</div>
+        <div class="result-sub" id="ob-sts-sub">calculating...</div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px">
+        <div class="result-preview" style="border-color:rgba(169,50,40,0.2)">
+          <div class="result-label" style="font-size:11px">Total going out</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;color:var(--danger)" id="ob-expenses">R—</div>
+        </div>
+        <div class="result-preview" style="border-color:rgba(43,110,71,0.2)">
+          <div class="result-label" style="font-size:11px">Remaining</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;color:var(--success)" id="ob-remaining">R—</div>
+        </div>
+      </div>
+
+      <div class="insight-box" id="ob-insight">Calculating your personalised insight...</div>
+
+      <div class="step-nav">
+        <button class="btn-back" onclick="goStep(2)">← Back</button>
+        <button class="btn-full" onclick="goToDashboard()">Go to my dashboard →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════ DASHBOARD ════════════════ -->
+<div id="dashboard" class="screen">
+  <div class="dash-wrap">
+    <div class="dash-header">
+      <div class="dash-greeting">
+        <h2 id="dash-greeting">Good morning 👋</h2>
+        <p>Here's your money picture for <span id="dash-month">April</span></p>
+      </div>
+      <div class="dash-date" id="dash-date">Loading...</div>
+    </div>
+
+    <!-- Safe to Spend Hero -->
+    <div class="sts-hero">
+      <div class="sts-label">Safe to spend today</div>
+      <div class="sts-amount" id="dash-sts">R—</div>
+      <div class="sts-sub" id="dash-sts-sub">Set up your finances to see this number</div>
+      <div class="sts-bar-wrap"><div class="sts-bar-fill" id="dash-sts-bar" style="width:70%"></div></div>
+      <div class="sts-bar-labels"><span id="dash-bar-spent">Spent: R0</span><span id="dash-bar-budget">Budget: R0</span></div>
+    </div>
+
+    <!-- Quick actions -->
+    <div class="quick-grid">
+      <button class="quick-btn" onclick="openExpenseModal()"><div class="quick-btn-icon">➕</div><div class="quick-btn-label">Add expense</div></button>
+      <button class="quick-btn" onclick="showScreen('debt-screen');renderDebt();setActiveNav(document.querySelector('.nav-link:nth-child(3)'))"><div class="quick-btn-icon">⚔️</div><div class="quick-btn-label">Debt plan</div></button>
+      <button class="quick-btn" onclick="showScreen('budget-screen');renderBudget()"><div class="quick-btn-icon">📊</div><div class="quick-btn-label">Budget</div></button>
+      <button class="quick-btn" onclick="renderAlerts()"><div class="quick-btn-icon">🔔</div><div class="quick-btn-label">Alerts</div></button>
+    </div>
+
+    <!-- Stats -->
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-card-label">Monthly income</div><div class="stat-card-val" id="d-income">R—</div><div class="stat-card-note">Take-home pay</div></div>
+      <div class="stat-card"><div class="stat-card-label">Fixed expenses</div><div class="stat-card-val" id="d-expenses">R—</div><div class="stat-card-note">Bills &amp; recurring</div></div>
+      <div class="stat-card"><div class="stat-card-label">Savings rate</div><div class="stat-card-val" id="d-savings-rate">—%</div><div class="stat-card-note" id="d-savings-note">of income saved</div></div>
+      <div class="stat-card"><div class="stat-card-label">Money left this month</div><div class="stat-card-val" id="d-remaining">R—</div><div class="stat-card-note" id="d-remaining-note">after fixed costs</div></div>
+    </div>
+
+    <!-- Score + Alerts -->
+    <div class="score-row">
+      <div class="score-card">
+        <div class="gauge-wrap">
+          <div class="gauge-arc"></div>
+          <div class="gauge-fill" id="gauge-fill"></div>
+          <div class="gauge-num" id="gauge-num">—</div>
+        </div>
+        <div class="score-label">Imali Score</div>
+        <div class="score-note" id="score-note">Your weekly financial health</div>
+      </div>
+      <div class="alerts-card">
+        <div class="alerts-title">Active alerts</div>
+        <div id="alerts-list"><div style="font-size:13px;color:var(--muted);padding:8px 0">No alerts — everything looks steady 💚</div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FAB -->
+  <button class="add-expense-btn" onclick="openExpenseModal()">+</button>
+</div>
+
+<!-- ════════════════ BUDGET SCREEN ════════════════ -->
+<div id="budget-screen" class="screen">
+  <div class="budget-wrap">
+    <div class="page-head">
+      <h2>Budget</h2>
+      <p>Track spending across your money buckets</p>
+    </div>
+    <div class="budget-overview">
+      <div class="budget-overview-title">Spending overview — <span id="budget-month">April</span></div>
+      <div class="budget-bars" id="budget-bars">Loading...</div>
+    </div>
+    <div class="sec-head"><h3>Categories</h3></div>
+    <div class="budget-cats" id="budget-cats">Loading...</div>
+  </div>
+  <button class="add-expense-btn" onclick="openExpenseModal()">+</button>
+</div>
+
+<!-- ════════════════ DEBT SCREEN ════════════════ -->
+<div id="debt-screen" class="screen">
+  <div class="debt-wrap">
+    <div class="page-head">
+      <h2>Debt Destroyer</h2>
+      <p>Enter your debts and see your exact debt-free date</p>
+    </div>
+
+    <div class="debt-input-card">
+      <h3>Your debts</h3>
+      <div id="debts-list"></div>
+      <button class="add-debt-btn" onclick="addDebtRow()">+ Add debt</button>
+      <div class="extra-row">
+        <label>Extra monthly payment</label>
+        <div class="extra-input-wrap debt-input-prefix">
+          <input class="debt-input" type="number" id="extra-payment" placeholder="e.g. 500" value="0" min="0" oninput="renderDebt()">
+        </div>
+      </div>
+      <div class="method-toggle">
+        <button class="method-btn active" id="meth-avalanche" onclick="setMethod('avalanche')">Avalanche (save most)</button>
+        <button class="method-btn" id="meth-snowball" onclick="setMethod('snowball')">Snowball (fastest wins)</button>
+      </div>
+    </div>
+
+    <div id="debt-results"></div>
+  </div>
+</div>
+
+<!-- ADD EXPENSE MODAL -->
+<div class="modal-overlay" id="expense-modal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <h3>Add expense</h3>
+    <div class="field">
+      <label>What was it?</label>
+      <input type="text" id="exp-desc" placeholder="e.g. Shoprite groceries" style="padding-left:14px">
+    </div>
+    <div class="field">
+      <label>Amount (R)</label>
+      <div class="input-wrap"><span class="input-prefix">R</span>
+        <input type="number" id="exp-amount" placeholder="0" min="0">
+      </div>
+    </div>
+    <div class="field">
+      <label>Category</label>
+      <select id="exp-cat" style="width:100%;padding:13px 14px;border:1.5px solid var(--sand);border-radius:var(--r-sm);font-size:15px;background:var(--white);color:var(--text);font-family:'DM Sans',sans-serif">
+        <option value="groceries">🛒 Groceries</option>
+        <option value="transport">🚌 Transport</option>
+        <option value="utilities">💡 Utilities</option>
+        <option value="airtime">📱 Airtime / Data</option>
+        <option value="accounts">🏷️ Store accounts</option>
+        <option value="other">🎯 Other</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-danger" onclick="closeExpenseModal()">Cancel</button>
+      <button class="btn-full" onclick="addExpense()">Add expense</button>
+    </div>
+  </div>
+</div>
+
+<!-- AI CHAT FAB -->
+<div class="ai-fab" id="ai-fab">
+  <div class="ai-fab-tip">Ask Imali AI</div>
+  <button class="ai-fab-btn" onclick="openChat()" aria-label="Open AI Money Mentor">💬<div class="ai-fab-pulse"></div></button>
+</div>
+
+<!-- AI CHAT PANEL -->
+<div class="ai-panel-overlay" id="ai-overlay" onclick="closeChat()"></div>
+<div class="ai-panel" id="ai-panel">
+  <div class="ai-panel-inner">
+    <div class="ai-panel-head">
+      <div class="ai-panel-handle"></div>
+      <div class="ai-panel-title-row">
+        <div class="ai-panel-title">
+          <div class="ai-avatar">I</div>
+          <div><div class="ai-name">Imali AI · Money Mentor</div><div class="ai-status"><div class="ai-status-dot"></div>Ready to help</div></div>
+        </div>
+        <button class="ai-close" onclick="closeChat()">×</button>
+      </div>
+      <div class="ai-context-bar"><div class="ai-ctx-dot"></div><span id="ai-context-text">Set up your finances to get personalised advice</span></div>
+    </div>
+    <div class="ai-messages" id="ai-messages"></div>
+    <div class="ai-starters" id="ai-starters">
+      <div class="ai-starters-label">Quick questions</div>
+      <div class="ai-chips">
+        <button class="ai-chip" onclick="askChip(this)">Can I afford a new phone?</button>
+        <button class="ai-chip" onclick="askChip(this)">How do I attack my debt?</button>
+        <button class="ai-chip" onclick="askChip(this)">What should my emergency fund be?</button>
+        <button class="ai-chip" onclick="askChip(this)">Am I saving enough?</button>
+        <button class="ai-chip" onclick="askChip(this)">How do I stretch to month-end?</button>
+        <button class="ai-chip" onclick="askChip(this)">What's eating my budget?</button>
+      </div>
+    </div>
+    <div class="ai-input-row">
+      <textarea class="ai-input" id="ai-input" placeholder="Ask me anything about your money..." rows="1"
+        onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChat()}"
+        oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,120)+'px'"></textarea>
+      <button class="ai-send" id="ai-send-btn" onclick="sendChat()">↑</button>
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav" id="bottom-nav" style="display:none">
+  <div class="bnav-inner">
+    <button class="bnav-item active" id="bn-home" onclick="showScreen('dashboard');setBNav('home')"><div class="bnav-icon">🏠</div><div class="bnav-label">Home</div></button>
+    <button class="bnav-item" id="bn-budget" onclick="showScreen('budget-screen');renderBudget();setBNav('budget')"><div class="bnav-icon">📊</div><div class="bnav-label">Budget</div></button>
+    <button class="bnav-item" id="bn-debt" onclick="showScreen('debt-screen');renderDebt();setBNav('debt')"><div class="bnav-icon">⚔️</div><div class="bnav-label">Debt</div></button>
+    <button class="bnav-item" id="bn-more" onclick="showScreen('dashboard');setBNav('more')"><div class="bnav-icon">⚙️</div><div class="bnav-label">More</div></button>
+  </div>
+</div>
+
+<script>
+// ── STATE ──
+let state = {
+  income: 0, otherIncome: 0,
+  expenses: { rent:4500, transport:1200, groceries:2800, utilities:800, airtime:350, accounts:900, other:500 },
+  debts: [], method: 'avalanche',
+  spentByCategory: { groceries:0, transport:0, utilities:0, airtime:0, accounts:0, other:0 },
+  transactions: []
+};
+
+try { const s = localStorage.getItem('imali_state'); if(s) state = {...state,...JSON.parse(s)}; } catch(e){}
+
+function save(){ try{ localStorage.setItem('imali_state', JSON.stringify(state)); }catch(e){} }
+function fmt(n){ return 'R'+(Math.round(n)||0).toLocaleString('en-ZA'); }
+function fmtNum(n){ return (Math.round(n)||0).toLocaleString('en-ZA'); }
+
+// ── NAVIGATION ──
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const isApp = ['dashboard','budget-screen','debt-screen'].includes(id);
+  document.getElementById('nav-app-links').style.display = isApp ? 'flex' : 'none';
+  document.getElementById('nav-landing-links').style.display = isApp ? 'none' : 'flex';
+  document.getElementById('bottom-nav').style.display = isApp ? 'block' : 'none';
+  document.getElementById('nav-mobile-start').style.display = isApp ? 'none' : 'block';
+  document.getElementById('ai-fab').style.display = isApp ? 'block' : 'none';
+  if(id==='dashboard') renderDashboard();
+  if(id==='budget-screen') renderBudget();
+  window.scrollTo(0,0);
+}
+
+function setActiveNav(btn){
+  document.querySelectorAll('.nav-link').forEach(b=>b.classList.remove('active-nav'));
+  if(btn) btn.classList.add('active-nav');
+}
+function setBNav(id){
+  document.querySelectorAll('.bnav-item').forEach(b=>b.classList.remove('active'));
+  const el=document.getElementById('bn-'+id); if(el) el.classList.add('active');
+}
+
+// ── ONBOARDING ──
+function startOnboarding(){
+  showScreen('onboarding');
+  document.getElementById('nav-app-links').style.display='none';
+  document.getElementById('nav-landing-links').style.display='none';
+  document.getElementById('bottom-nav').style.display='none';
+  document.getElementById('nav-mobile-start').style.display='none';
+  goStep(1);
+}
+
+function goStep(n){
+  document.querySelectorAll('.onboard-step').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.prog-step').forEach((s,i)=>{
+    s.classList.remove('active','done');
+    if(i+1<n) s.classList.add('done');
+    if(i+1===n) s.classList.add('active');
+  });
+  document.getElementById('step'+n).classList.add('active');
+  if(n===3) calcOnboardResult();
+}
+
+function updateSlider(key, val){
+  state.expenses[key] = parseInt(val)||0;
+  document.getElementById('sv-'+key).textContent = fmt(val);
+}
+
+function calcOnboardResult(){
+  const income = (parseInt(document.getElementById('income-salary').value)||0) + (parseInt(document.getElementById('income-other').value)||0);
+  state.income = parseInt(document.getElementById('income-salary').value)||0;
+  state.otherIncome = parseInt(document.getElementById('income-other').value)||0;
+  const totalIncome = income;
+  const totalExp = Object.values(state.expenses).reduce((a,b)=>a+b,0);
+  const remaining = totalIncome - totalExp;
+  const today = new Date();
+  const daysInMonth = new Date(today.getFullYear(), today.getMonth()+1, 0).getDate();
+  const daysLeft = daysInMonth - today.getDate() + 1;
+  const safeToday = Math.max(0, remaining / daysInMonth);
+
+  document.getElementById('ob-sts').textContent = fmt(safeToday);
+  document.getElementById('ob-sts-sub').textContent = `${daysLeft} days left in ${today.toLocaleString('default',{month:'long'})}`;
+  document.getElementById('ob-expenses').textContent = fmt(totalExp);
+  document.getElementById('ob-remaining').textContent = fmt(remaining);
+
+  let insight = '';
+  const rentPct = Math.round(state.expenses.rent / totalIncome * 100);
+  const savingsRate = Math.round((remaining / totalIncome) * 100);
+  if(remaining < 0) insight = `⚠️ Your expenses exceed your income by ${fmt(Math.abs(remaining))}. This is urgent — let's look at which expenses can flex first. Transport and "other" are usually the easiest places to start.`;
+  else if(rentPct > 35) insight = `🏠 Your rent/bond is ${rentPct}% of income — SA average is about 25-30%. That's ${fmt(state.expenses.rent - totalIncome*0.3)} above average and is likely squeezing everything else. Worth reviewing.`;
+  else if(savingsRate < 5) insight = `💡 You're saving about ${savingsRate}% of income. Just adding R${Math.round(totalIncome*0.05 - remaining)} more to savings each month would get you to the recommended 5% floor — your emergency fund target.`;
+  else insight = `💚 Good foundation! You have ${fmt(remaining)} left after fixed costs. The key now is tracking where that goes — the Budget screen will show you the leaks.`;
+
+  document.getElementById('ob-insight').textContent = insight;
+  save();
+}
+
+function goToDashboard(){
+  showScreen('dashboard');
+  document.getElementById('ai-fab').style.display = 'block';
+  renderDashboard();
+}
+
+// ── DASHBOARD ──
+function renderDashboard(){
+  const today = new Date();
+  const hour = today.getHours();
+  const greeting = hour<12 ? 'Good morning' : hour<17 ? 'Good afternoon' : 'Good evening';
+  document.getElementById('dash-greeting').textContent = `${greeting} 👋`;
+  document.getElementById('dash-month').textContent = today.toLocaleString('default',{month:'long'});
+  document.getElementById('dash-date').textContent = today.toLocaleDateString('en-ZA',{weekday:'short',day:'numeric',month:'short'});
+
+  const totalIncome = state.income + state.otherIncome;
+  const totalExp = Object.values(state.expenses).reduce((a,b)=>a+b,0);
+  const totalSpent = Object.values(state.spentByCategory).reduce((a,b)=>a+b,0);
+  const remaining = totalIncome - totalExp;
+  const daysInMonth = new Date(today.getFullYear(), today.getMonth()+1, 0).getDate();
+  const daysLeft = daysInMonth - today.getDate() + 1;
+  const budgetForToday = remaining / daysInMonth;
+  const safeNow = Math.max(0, budgetForToday * daysLeft - totalSpent);
+  const savingsRate = totalIncome > 0 ? Math.round(remaining/totalIncome*100) : 0;
+  const barPct = totalExp > 0 ? Math.min(100, Math.round(totalSpent/totalExp*100)) : 0;
+
+  document.getElementById('dash-sts').textContent = totalIncome > 0 ? fmt(safeNow) : 'Set up first →';
+  document.getElementById('dash-sts-sub').textContent = totalIncome > 0 ? `${daysLeft} days remaining in ${today.toLocaleString('default',{month:'long'})}` : 'Complete setup to see your safe-to-spend number';
+  document.getElementById('dash-sts-bar').style.width = (100 - barPct)+'%';
+  document.getElementById('dash-bar-spent').textContent = `Spent: ${fmt(totalSpent)}`;
+  document.getElementById('dash-bar-budget').textContent = `Budget: ${fmt(totalExp)}`;
+
+  document.getElementById('d-income').textContent = fmt(totalIncome);
+  document.getElementById('d-expenses').textContent = fmt(totalExp);
+  const srEl = document.getElementById('d-savings-rate');
+  srEl.textContent = savingsRate+'%';
+  srEl.className = 'stat-card-val '+(savingsRate>=15?'val-good':savingsRate>=5?'val-warn':'val-danger');
+  document.getElementById('d-remaining').textContent = fmt(remaining);
+  document.getElementById('d-remaining-note').textContent = remaining < 0 ? '⚠️ expenses exceed income' : 'after fixed costs';
+
+  // Score
+  let score = 0;
+  if(totalIncome > 0){
+    const expRatio = totalExp / totalIncome;
+    score += Math.round(Math.max(0, (1 - expRatio) * 50));
+    score += Math.min(30, savingsRate * 1.5);
+    score += state.debts.length === 0 ? 20 : 10;
+  }
+  score = Math.min(100, Math.max(0, Math.round(score)));
+  document.getElementById('gauge-num').textContent = score || '—';
+  const fillEl = document.getElementById('gauge-fill');
+  const scoreColor = score >= 70 ? 'var(--sage)' : score >= 40 ? 'var(--gold)' : 'var(--danger)';
+  const rotDeg = 135 + (score/100)*270;
+  fillEl.style.transform = `rotate(${rotDeg}deg)`;
+  fillEl.style.borderTopColor = scoreColor;
+  fillEl.style.borderLeftColor = scoreColor;
+  document.getElementById('score-note').textContent = score >= 70 ? 'Strong position 💚' : score >= 40 ? 'Room to improve' : 'Needs attention';
+
+  renderAlerts();
+}
+
+function renderAlerts(){
+  const totalIncome = state.income + state.otherIncome;
+  const totalExp = Object.values(state.expenses).reduce((a,b)=>a+b,0);
+  const savingsRate = totalIncome > 0 ? Math.round((totalIncome-totalExp)/totalIncome*100) : 0;
+  const rentPct = totalIncome > 0 ? Math.round(state.expenses.rent/totalIncome*100) : 0;
+  const alerts = [];
+
+  if(totalIncome === 0) alerts.push({dot:'dot-info', text:'Set up your finances to see personalised alerts', action:'Go to setup → complete onboarding'});
+  if(totalIncome > 0 && totalExp > totalIncome) alerts.push({dot:'dot-danger', text:`Expenses exceed income by ${fmt(totalExp-totalIncome)}`, action:'Action: Review transport and "other" categories first'});
+  if(savingsRate < 5 && totalIncome > 0 && totalExp <= totalIncome) alerts.push({dot:'dot-warn', text:`Savings rate is ${savingsRate}% — below the 10% target`, action:`Action: Move ${fmt(totalIncome*0.1 - (totalIncome-totalExp))} more to savings this month`});
+  if(rentPct > 35 && totalIncome > 0) alerts.push({dot:'dot-warn', text:`Rent/bond is ${rentPct}% of income — SA average is 25-30%`, action:'Action: Consider if refinancing or relocating could free up cash'});
+  if(state.debts.length > 0){
+    const totalDebt = state.debts.reduce((a,d)=>a+(parseFloat(d.balance)||0),0);
+    alerts.push({dot:'dot-info', text:`Total debt: ${fmt(totalDebt)} across ${state.debts.length} account${state.debts.length>1?'s':''}`, action:'Action: Check your Debt Destroyer plan for the fastest payoff route'});
+  }
+  if(alerts.length === 0) alerts.push({dot:'dot-good', text:'All clear — your finances are looking steady', action:'Keep it up! Check back after your next spend.'});
+
+  const el = document.getElementById('alerts-list');
+  el.innerHTML = alerts.map(a=>`<div class="alert-item"><div class="alert-dot ${a.dot}"></div><div><div class="alert-body">${a.text}</div><div class="alert-action">${a.action}</div></div></div>`).join('');
+}
+
+// ── BUDGET ──
+const CAT_META = {
+  rent:{name:'Rent/Bond',emoji:'🏠'},transport:{name:'Transport',emoji:'🚌'},
+  groceries:{name:'Groceries',emoji:'🛒'},utilities:{name:'Utilities',emoji:'💡'},
+  airtime:{name:'Airtime/Data',emoji:'📱'},accounts:{name:'Accounts',emoji:'🏷️'},other:{name:'Other',emoji:'🎯'}
+};
+
+function renderBudget(){
+  const today = new Date();
+  document.getElementById('budget-month').textContent = today.toLocaleString('default',{month:'long'});
+  const barsEl = document.getElementById('budget-bars');
+  const catsEl = document.getElementById('budget-cats');
+  let barsHtml='', catsHtml='';
+
+  Object.entries(CAT_META).forEach(([key,meta])=>{
+    const budget = state.expenses[key]||0;
+    const spent = state.spentByCategory[key]||0;
+    const pct = budget > 0 ? Math.min(100, Math.round(spent/budget*100)) : 0;
+    const cls = pct>100?'over':pct>80?'near':'';
+    barsHtml += `<div class="bbar"><div class="bbar-name">${meta.emoji} ${meta.name}</div><div class="bbar-track"><div class="bbar-fill ${cls}" style="width:${pct}%"></div></div><div class="bbar-val">${fmt(spent)}</div></div>`;
+    catsHtml += `<div class="cat-card"><div class="cat-emoji">${meta.emoji}</div><div class="cat-info"><div class="cat-name">${meta.name}</div><div class="cat-detail">Budget: ${fmt(budget)}</div></div><div class="cat-right"><div class="cat-spent" style="color:${pct>100?'var(--danger)':pct>80?'var(--warning)':'var(--text)'}">${fmt(spent)}</div><div class="cat-budget">${pct}% used</div><div class="cat-bar"><div class="cat-bar-fill" style="width:${pct}%;background:${pct>100?'var(--danger)':pct>80?'var(--warning)':'var(--sage)'}"></div></div></div></div>`;
+  });
+  barsEl.innerHTML = barsHtml;
+  catsEl.innerHTML = catsHtml;
+}
+
+// ── EXPENSE MODAL ──
+function openExpenseModal(){ document.getElementById('expense-modal').classList.add('open'); }
+function closeExpenseModal(){ document.getElementById('expense-modal').classList.remove('open'); }
+
+function addExpense(){
+  const desc = document.getElementById('exp-desc').value.trim();
+  const amount = parseFloat(document.getElementById('exp-amount').value)||0;
+  const cat = document.getElementById('exp-cat').value;
+  if(!amount){ alert('Please enter an amount'); return; }
+  state.spentByCategory[cat] = (state.spentByCategory[cat]||0) + amount;
+  state.transactions.push({desc:desc||cat, amount, cat, date:new Date().toISOString()});
+  save();
+  closeExpenseModal();
+  document.getElementById('exp-desc').value='';
+  document.getElementById('exp-amount').value='';
+  if(document.getElementById('dashboard').classList.contains('active')) renderDashboard();
+  if(document.getElementById('budget-screen').classList.contains('active')) renderBudget();
+}
+
+// ── DEBT ──
+let debtIdCounter = 0;
+const DEFAULT_DEBTS = [
+  {id:'d1', name:'Credit card', balance:8500, rate:22, min:255},
+  {id:'d2', name:'Personal loan', balance:25000, rate:14, min:600}
+];
+
+function initDebts(){
+  if(state.debts.length===0) state.debts = JSON.parse(JSON.stringify(DEFAULT_DEBTS));
+}
+
+function addDebtRow(){
+  debtIdCounter++;
+  state.debts.push({id:'dyn'+debtIdCounter, name:'', balance:0, rate:0, min:0});
+  renderDebtInputs();
+}
+
+function removeDebt(id){
+  state.debts = state.debts.filter(d=>d.id!==id);
+  renderDebt();
+}
+
+function setMethod(m){
+  state.method = m;
+  document.getElementById('meth-avalanche').classList.toggle('active', m==='avalanche');
+  document.getElementById('meth-snowball').classList.toggle('active', m==='snowball');
+  renderDebtCalc();
+}
+
+function renderDebt(){
+  initDebts();
+  renderDebtInputs();
+  renderDebtCalc();
+}
+
+function renderDebtInputs(){
+  const el = document.getElementById('debts-list');
+  el.innerHTML = state.debts.map(d=>`
+    <div class="debt-row" id="row-${d.id}">
+      <input class="debt-input" placeholder="Debt name e.g. Edgars" value="${d.name||''}" oninput="updateDebt('${d.id}','name',this.value)">
+      <div class="debt-input-prefix"><input class="debt-input" type="number" placeholder="Balance" value="${d.balance||''}" min="0" oninput="updateDebt('${d.id}','balance',this.value)"></div>
+      <div class="debt-input-prefix-pct" style="position:relative"><input class="debt-input" type="number" placeholder="Rate" value="${d.rate||''}" min="0" max="100" oninput="updateDebt('${d.id}','rate',this.value)" style="padding-right:24px"></div>
+      <div class="debt-input-prefix"><input class="debt-input" type="number" placeholder="Min pay" value="${d.min||''}" min="0" oninput="updateDebt('${d.id}','min',this.value)"></div>
+      <button class="del-btn" onclick="removeDebt('${d.id}')">×</button>
+    </div>
+  `).join('');
+}
+
+function updateDebt(id, field, val){
+  const d = state.debts.find(x=>x.id===id);
+  if(!d) return;
+  d[field] = field==='name' ? val : parseFloat(val)||0;
+  renderDebtCalc();
+  save();
+}
+
+function renderDebtCalc(){
+  const extra = parseFloat(document.getElementById('extra-payment').value)||0;
+  const validDebts = state.debts.filter(d=>d.balance>0 && d.min>0);
+  const el = document.getElementById('debt-results');
+  if(validDebts.length===0){ el.innerHTML='<p style="color:var(--muted);font-size:14px;padding:12px 0">Add your debts above to see your payoff plan.</p>'; return; }
+
+  // Sort
+  const sorted = [...validDebts].sort((a,b)=> state.method==='avalanche' ? b.rate-a.rate : a.balance-b.balance);
+  const totalMinPayment = sorted.reduce((s,d)=>s+d.min,0);
+  const totalPayment = totalMinPayment + extra;
+
+  // Simulate payoff
+  let balances = sorted.map(d=>({...d, remaining:d.balance}));
+  let month=0, totalInterestPaid=0, minInterestPaid=0;
+  const maxMonths = 600;
+  const timeline=[];
+  while(balances.some(d=>d.remaining>0) && month<maxMonths){
+    month++;
+    let payment = totalPayment;
+    let monthlyBalance = 0;
+    balances.forEach(d=>{
+      if(d.remaining<=0) return;
+      const interest = d.remaining * (d.rate/100/12);
+      totalInterestPaid += interest;
+      d.remaining += interest;
+    });
+    // Pay minimums first
+    balances.forEach(d=>{
+      if(d.remaining<=0) return;
+      const pay = Math.min(d.remaining, d.min);
+      d.remaining -= pay;
+      payment -= pay;
+    });
+    // Extra to focus debt
+    for(let d of balances){
+      if(d.remaining<=0 || payment<=0) continue;
+      const pay = Math.min(d.remaining, payment);
+      d.remaining -= pay;
+      payment -= pay;
+    }
+    balances.forEach(d=>{ monthlyBalance += Math.max(0,d.remaining); });
+    timeline.push({month, balance: monthlyBalance});
+  }
+
+  // Min-only simulation
+  let balancesMin = sorted.map(d=>({...d, remaining:d.balance}));
+  let monthMin=0;
+  while(balancesMin.some(d=>d.remaining>0) && monthMin<maxMonths){
+    monthMin++;
+    balancesMin.forEach(d=>{
+      if(d.remaining<=0) return;
+      const interest = d.remaining*(d.rate/100/12);
+      minInterestPaid += interest;
+      d.remaining += interest - d.min;
+      if(d.remaining<0) d.remaining=0;
+    });
+  }
+
+  const interestSaved = minInterestPaid - totalInterestPaid;
+  const monthsSaved = monthMin - month;
+  const today = new Date();
+  const freeDate = new Date(today.getFullYear(), today.getMonth() + month, today.getDate());
+  const freeDateStr = freeDate.toLocaleDateString('en-ZA',{month:'long',year:'numeric'});
+  const years = Math.floor(month/12);
+  const months = month%12;
+  const totalDebt = validDebts.reduce((s,d)=>s+d.balance,0);
+
+  el.innerHTML = `
+    <div class="debt-result">
+      <div class="debt-result-label">Debt-free date</div>
+      <div class="debt-result-date">${freeDateStr}</div>
+      <div class="debt-result-sub">${years>0?years+' year'+(years>1?'s':'')+', ':''}${months} month${months!==1?'s':''} from today · ${fmt(totalPayment)}/month</div>
+    </div>
+    <div class="debt-savings">
+      <div class="debt-save-card"><div class="debt-save-label">Interest saved</div><div class="debt-save-val">${fmt(Math.max(0,interestSaved))}</div></div>
+      <div class="debt-save-card"><div class="debt-save-label">Months saved</div><div class="debt-save-val">${Math.max(0,monthsSaved)}</div></div>
+    </div>
+    <div class="payoff-order">
+      <h3>Recommended payoff order</h3>
+      ${sorted.map((d,i)=>`<div class="payoff-item">
+        <div class="payoff-num ${i===0?'focus':''}">${i+1}</div>
+        <div><div class="payoff-name">${d.name||'Debt '+(i+1)}</div><div class="payoff-detail">${fmt(d.balance)} at ${d.rate}% APR · Min ${fmt(d.min)}/mo</div></div>
+        ${i===0?'<span class="payoff-badge">Focus here</span>':''}
+      </div>`).join('')}
+    </div>
+    <div class="timeline-card">
+      <h3>Payoff timeline</h3>
+      <div class="timeline-wrap">
+        <table class="timeline-table">
+          <thead><tr><th>Month</th><th>Total debt remaining</th></tr></thead>
+          <tbody>${timeline.filter((_,i)=>i%3===0||i===timeline.length-1).map(t=>`<tr><td>Mo ${t.month}</td><td>${fmt(t.balance)}</td></tr>`).join('')}</tbody>
+        </table>
+      </div>
+    </div>
+  `;
+}
+
+// ── INIT ──
+document.addEventListener('DOMContentLoaded', ()=>{
+  const today = new Date();
+  if(state.income > 0){
+    showScreen('dashboard');
+    document.getElementById('ai-fab').style.display = 'block';
+  }
+  initChat();
+});
+
+// ── AI CHAT ──
+let chatHistory = [];
+let chatIsOpen = false;
+let aiTyping = false;
+
+function buildSystemPrompt(){
+  const totalIncome = state.income + state.otherIncome;
+  const totalExp = Object.values(state.expenses).reduce((a,b)=>a+b,0);
+  const remaining = totalIncome - totalExp;
+  const savingsRate = totalIncome > 0 ? Math.round(remaining/totalIncome*100) : 0;
+  const totalSpent = Object.values(state.spentByCategory).reduce((a,b)=>a+b,0);
+  const today = new Date();
+  const daysLeft = new Date(today.getFullYear(),today.getMonth()+1,0).getDate() - today.getDate() + 1;
+  const safeToSpend = totalIncome > 0 ? Math.max(0, Math.round((remaining / new Date(today.getFullYear(),today.getMonth()+1,0).getDate()) * daysLeft - totalSpent)) : null;
+  const debtList = state.debts.filter(d=>d.balance>0).map(d=>`${d.name}: R${d.balance} at ${d.rate}% APR (min R${d.min}/mo)`).join(', ');
+  const totalDebt = state.debts.reduce((s,d)=>s+(d.balance||0),0);
+
+  return `You are Imali AI, a warm, honest, non-judgmental money mentor built specifically for South Africans. You speak in plain South African English — warm, direct, practical. You never lecture or shame. You always give one specific action the user can take today.
+
+USER'S FINANCIAL CONTEXT (always use these real numbers in your answers):
+- Monthly take-home income: R${state.income.toLocaleString('en-ZA')}${state.otherIncome > 0 ? ` + R${state.otherIncome.toLocaleString('en-ZA')} additional` : ''}
+- Total monthly income: R${totalIncome.toLocaleString('en-ZA')}
+- Fixed monthly expenses: R${totalExp.toLocaleString('en-ZA')}
+- Money remaining after fixed costs: R${remaining.toLocaleString('en-ZA')}
+- Savings rate: ${savingsRate}%
+- Spent so far this month: R${totalSpent.toLocaleString('en-ZA')}
+- Days left in month: ${daysLeft}
+- Safe to spend today: ${safeToSpend !== null ? 'R'+safeToSpend.toLocaleString('en-ZA') : 'not calculated yet'}
+${totalDebt > 0 ? `- Total debt: R${totalDebt.toLocaleString('en-ZA')} (${debtList})` : '- No debts recorded'}
+- Expense breakdown: Rent/Bond R${state.expenses.rent.toLocaleString('en-ZA')}, Transport R${state.expenses.transport.toLocaleString('en-ZA')}, Groceries R${state.expenses.groceries.toLocaleString('en-ZA')}, Utilities R${state.expenses.utilities.toLocaleString('en-ZA')}, Airtime/Data R${state.expenses.airtime.toLocaleString('en-ZA')}, Store accounts/Loans R${state.expenses.accounts.toLocaleString('en-ZA')}, Other R${state.expenses.other.toLocaleString('en-ZA')}
+
+RULES:
+1. Always use Rands (R) — never $ or other currencies
+2. Give specific rand amounts based on THIS user's actual numbers, never generic percentages alone
+3. Be warm and non-judgmental — this person may be stressed. Meet them where they are.
+4. Keep responses concise — 3-5 short paragraphs max. Use bold for key numbers.
+5. End every response with exactly one "Today's action:" — a specific, small thing they can do right now
+6. If income is R0 or not set up, gently encourage them to complete their financial setup first
+7. Reference South African financial context where relevant: store accounts (Edgars, Mr Price, Ackermans), Capitec, SASSA, stokvel, UIF, SARS, etc.
+8. Never give investment advice or recommend specific financial products — that requires an FSP licence
+9. If someone seems in serious financial distress, acknowledge their feelings first before numbers`;
+}
+
+function buildContextBar(){
+  const totalIncome = state.income + state.otherIncome;
+  const totalExp = Object.values(state.expenses).reduce((a,b)=>a+b,0);
+  const remaining = totalIncome - totalExp;
+  if(totalIncome === 0) return 'Set up your finances to get personalised advice';
+  const safePerDay = Math.round(remaining / new Date().getDate());
+  return `Income R${totalIncome.toLocaleString('en-ZA')} · Expenses R${totalExp.toLocaleString('en-ZA')} · Left R${remaining.toLocaleString('en-ZA')} · ${state.debts.filter(d=>d.balance>0).length} debt${state.debts.filter(d=>d.balance>0).length!==1?'s':''}`;
+}
+
+function initChat(){
+  const welcomeMsg = state.income > 0
+    ? `Sawubona! 👋 I'm your Imali AI money mentor. I can see your financial picture — income of **R${(state.income+state.otherIncome).toLocaleString('en-ZA')}**, expenses of **R${Object.values(state.expenses).reduce((a,b)=>a+b,0).toLocaleString('en-ZA')}**${state.debts.filter(d=>d.balance>0).length>0 ? `, and **${state.debts.filter(d=>d.balance>0).length} debt${state.debts.filter(d=>d.balance>0).length>1?'s':''}** on your plate`:''}.
+
+What's on your mind? Ask me anything — no judgment, no jargon.`
+    : `Sawubona! 👋 I'm your Imali AI money mentor — warm, honest, and built for South African financial realities.
+
+I notice you haven't set up your finances yet. Once you complete the 3-minute setup, I'll know your exact Rand amounts and can give you truly personalised advice.
+
+For now, feel free to ask me anything — budgeting, debt, saving, whatever's keeping you up at night.`;
+
+  renderAIMessage('ai', welcomeMsg);
+}
+
+function openChat(){
+  chatIsOpen = true;
+  document.getElementById('ai-panel').classList.add('open');
+  document.getElementById('ai-overlay').classList.add('open');
+  document.getElementById('ai-context-text').textContent = buildContextBar();
+  document.body.style.overflow = 'hidden';
+  setTimeout(()=>document.getElementById('ai-input').focus(), 400);
+}
+
+function closeChat(){
+  chatIsOpen = false;
+  document.getElementById('ai-panel').classList.remove('open');
+  document.getElementById('ai-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function askChip(btn){
+  const q = btn.textContent;
+  document.getElementById('ai-starters').style.display = 'none';
+  document.getElementById('ai-input').value = q;
+  sendChat();
+}
+
+function renderAIMessage(role, text){
+  const el = document.getElementById('ai-messages');
+  const div = document.createElement('div');
+  div.className = `ai-msg ${role}`;
+  const initials = role === 'ai' ? 'I' : 'You';
+  div.innerHTML = `
+    <div class="ai-msg-avatar">${initials}</div>
+    <div class="ai-bubble">${formatAIText(text)}</div>`;
+  el.appendChild(div);
+  el.scrollTop = el.scrollHeight;
+  return div;
+}
+
+function formatAIText(text){
+  return text
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/^- (.+)$/gm, '<li>$1</li>')
+    .replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>')
+    .replace(/\n\n/g, '</p><p>')
+    .replace(/\n/g, '<br>')
+    .replace(/^(.+)$/, '<p>$1</p>');
+}
+
+function showTyping(){
+  const el = document.getElementById('ai-messages');
+  const div = document.createElement('div');
+  div.className = 'ai-msg ai';
+  div.id = 'ai-typing';
+  div.innerHTML = `<div class="ai-msg-avatar">I</div><div class="ai-bubble"><div class="typing"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div>`;
+  el.appendChild(div);
+  el.scrollTop = el.scrollHeight;
+}
+
+function hideTyping(){
+  const el = document.getElementById('ai-typing');
+  if(el) el.remove();
+}
+
+async function sendChat(){
+  if(aiTyping) return;
+  const input = document.getElementById('ai-input');
+  const text = input.value.trim();
+  if(!text) return;
+
+  input.value = '';
+  input.style.height = 'auto';
+  document.getElementById('ai-starters').style.display = 'none';
+  document.getElementById('ai-send-btn').disabled = true;
+  aiTyping = true;
+
+  renderAIMessage('user', text);
+  chatHistory.push({ role: 'user', content: text });
+
+  showTyping();
+
+  try {
+    const response = await fetch('/api/chat', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: buildSystemPrompt(),
+        messages: chatHistory
+      })
+    });
+
+    const data = await response.json();
+    hideTyping();
+
+    if(data.error){
+      const errMsg = `Something went wrong on our end — please try again in a moment. If it keeps happening, refresh the page.\n\n**Today's action:** ${generateFallbackResponse(chatHistory[chatHistory.length-1]?.content||'').split('\n\n').pop()}`;
+      renderAIMessage('ai', errMsg);
+    } else {
+      const reply = data.content.map(c=>c.text||'').join('');
+      chatHistory.push({ role: 'assistant', content: reply });
+      renderAIMessage('ai', reply);
+    }
+  } catch(err){
+    hideTyping();
+    const fallback = `I'm having trouble connecting right now. Here's a quick answer based on your data:\n\n${generateFallbackResponse(text)}`;
+    renderAIMessage('ai', fallback);
+  }
+
+  aiTyping = false;
+  document.getElementById('ai-send-btn').disabled = false;
+  document.getElementById('ai-input').focus();
+}
+
+function generateFallbackResponse(question){
+  const totalIncome = state.income + state.otherIncome;
+  const totalExp = Object.values(state.expenses).reduce((a,b)=>a+b,0);
+  const remaining = totalIncome - totalExp;
+  const q = question.toLowerCase();
+
+  if(q.includes('afford') || q.includes('buy') || q.includes('spend')){
+    return totalIncome > 0
+      ? `Your safe-to-spend today is **R${Math.max(0,Math.round(remaining/30)).toLocaleString('en-ZA')}**. Before any big purchase, check if it fits within this number or if you can save toward it over 2-3 months.\n\n**Today's action:** Calculate how many days of safe-to-spend the item costs.`
+      : `Set up your income and expenses first — then I can give you an exact Rand answer.\n\n**Today's action:** Complete the 3-step financial setup.`;
+  }
+  if(q.includes('debt') || q.includes('loan') || q.includes('account')){
+    const totalDebt = state.debts.reduce((s,d)=>s+(d.balance||0),0);
+    return totalDebt > 0
+      ? `You have **R${totalDebt.toLocaleString('en-ZA')}** in debt. The fastest strategy is to pay minimums on everything, then throw every extra rand at your highest-interest debt first (avalanche method). Check your Debt Destroyer screen for your exact debt-free date.\n\n**Today's action:** Open the Debt Destroyer and add R100 extra to your highest-interest debt this month.`
+      : `No debts recorded yet. Add them in the Debt Destroyer screen to see your payoff plan.\n\n**Today's action:** Open the Debt Destroyer and add your first debt.`;
+  }
+  if(q.includes('sav') || q.includes('emergency')){
+    const savRate = totalIncome > 0 ? Math.round(remaining/totalIncome*100) : 0;
+    const emergencyTarget = totalExp * 3;
+    return `Your current savings rate is about **${savRate}%** of income. A healthy emergency fund is 3 months of expenses — for you that's **R${emergencyTarget.toLocaleString('en-ZA')}**. Start with R${Math.round(totalIncome*0.05).toLocaleString('en-ZA')}/month (5% of income) and build from there.\n\n**Today's action:** Set up a separate savings account and automate R${Math.round(totalIncome*0.05).toLocaleString('en-ZA')} to transfer on payday.`;
+  }
+  if(q.includes('month') || q.includes('stretch') || q.includes('broke')){
+    return `With **R${remaining.toLocaleString('en-ZA')}** left after fixed costs, that's **R${Math.round(remaining/30).toLocaleString('en-ZA')}/day** to work with. The trick is knowing your daily number and treating it like a spending limit — not a bank balance.\n\n**Today's action:** Write your daily safe-to-spend number on a sticky note and check it before every purchase this week.`;
+  }
+  return `Based on your income of **R${totalIncome.toLocaleString('en-ZA')}** and expenses of **R${totalExp.toLocaleString('en-ZA')}**, you have **R${remaining.toLocaleString('en-ZA')}** to work with each month. The key to financial health is knowing where that goes.\n\n**Today's action:** Track every expense for the next 7 days — just awareness changes behaviour.`;
+}
+
+</script>
+</body>
+</html>

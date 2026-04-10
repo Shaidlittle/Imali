@@ -1,0 +1,9 @@
+{
+  "name": "imali",
+  "version": "1.0.0",
+  "description": "Imali — South Africa's financial wellness app",
+  "private": true,
+  "engines": {
+    "node": ">=18"
+  }
+}
